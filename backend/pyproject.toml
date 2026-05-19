@@ -9,6 +9,7 @@ description = "Backend FastAPI minimo para a plataforma educativa Byst.end."
 requires-python = ">=3.12"
 dependencies = [
   "fastapi",
+  "google-generativeai",
   "uvicorn[standard]",
   "sqlalchemy",
   "pydantic",
@@ -19,4 +20,4 @@ dev = []
 
 [tool.setuptools]
 py-modules = ["app", "config", "database"]
-packages = ["models", "routers", "schemas", "seed"]
+packages = ["models", "routers", "schemas", "seed", "services"]
