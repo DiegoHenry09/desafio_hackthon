@@ -40,7 +40,7 @@ Fora do estado atual: backend, frontend, chat, quiz, simulador e cenarios ainda 
 
 Estado atual do repositorio:
 
-- Documentacao de governanca e arquitetura existente em `Govenanca/`.
+- Documentacao de governanca e arquitetura existente em `docs/`.
 - Artefato intermediario de conteudo gerado em `backend/seed/conteudo_normalizado.curated.preview.json`.
 - JSON curado contem 60 registros vindos da aba `2.3. NANO CONTEUDOS`.
 - Todos os registros preservam `source_sheet`, `source_row`, `source_id` e `usage_policy`.
