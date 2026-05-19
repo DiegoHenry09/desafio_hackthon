@@ -611,3 +611,55 @@ Auditoria Documentation/QA + IA Responsavel documentada para escolher o modelo d
 - Configurar `GEMINI_MODEL=gemini-3.1-flash-lite` no `.env` local somente com autorizacao humana.
 - Revalidar `POST /chat` perto da demo, na mesma rede e maquina usadas na apresentacao.
 - Ensaiar fallback automatico e resposta off-topic antes da apresentacao.
+
+## 2026-05-19 — Contrato front/back para integracao
+
+### Etapa atual
+
+Revisao Integration/QA realizada para documentar o contrato real entre backend FastAPI e frontend React/Vite, com foco em consumo seguro da biblioteca, busca, detalhes e chat orientativo.
+
+### Arquivos gerados ou atualizados
+
+- `docs/17_CONTRATO_FRONT_BACK.md`
+- `docs/09_HANDOFF.md`
+
+### Endpoints validados
+
+- `GET /health` retornou HTTP 200 com campo `status`.
+- `GET /conteudos` retornou HTTP 200 com 50 itens e campos de rastreabilidade.
+- `GET /tipos-violencia` retornou HTTP 200 com 7 tipos.
+- `GET /busca?q=testemunha` retornou HTTP 200, `total = 5`.
+- `GET /busca?q=canais` retornou HTTP 200, `total = 13`.
+- `GET /conteudos/1` retornou HTTP 200 com detalhe, nanos, texto longo, flags e motivos de revisao.
+- `POST /chat` com a pergunta da demo retornou HTTP 200, fallback seguro sem chave, aviso de nao substituicao e fontes `95`, `200`, `207`.
+
+### Decisoes e orientacoes registradas
+
+- Frontend deve usar `VITE_API_URL=http://localhost:8000`.
+- Chave Gemini nunca vai para o frontend.
+- Para Gemini real na demo, backend local deve configurar `GEMINI_MODEL=gemini-3.1-flash-lite` e `GEMINI_API_KEY`.
+- Frontend deve renderizar fontes do chat dinamicamente e nao hardcodar `source_id 204`.
+- `source_id 95` e criterio suficiente para a pergunta demonstravel da testemunha quando a resposta respeita guardrails.
+- Exemplos TypeScript com `fetch` foram documentados para `getConteudos`, `getConteudoById`, `buscarConteudos`, `getTiposViolencia` e `sendChatMessage`.
+
+### Regras preservadas
+
+- Nenhuma tela frontend foi criada ou alterada.
+- Nenhum design foi alterado.
+- JSON curado nao foi alterado.
+- Backend estrutural nao foi alterado.
+- `.env` nao foi alterado.
+- Nenhuma chave Gemini foi exposta.
+- Nao houve commit/push nesta etapa.
+
+### Divergencias encontradas
+
+- `docs/api.md` e plano de demo mencionam `source_id 204` como apoio esperado da pergunta da testemunha, mas a validacao local retornou `207` como terceira fonte do chat. Isso nao bloqueia a demo porque `source_id 95` apareceu e o frontend deve exibir fontes dinamicas.
+- `README.md` e partes de `docs/02_ARQUITETURA_TECNICA.md` ainda refletem estado historico anterior ao chat/modelo atual; `docs/api.md`, `docs/16_AUDITORIA_MODELOS_CHAT.md` e `docs/17_CONTRATO_FRONT_BACK.md` devem ser tratados como referencia atual do contrato.
+
+### Pendencias
+
+- Frontend consumir endpoints reais usando `VITE_API_URL`.
+- Validar CORS com frontend rodando em `http://localhost:5173`.
+- Revalidar `/chat` com Gemini real quando `.env` local estiver configurado.
+- Decidir se vale ajustar RAG para tentar manter `204` como terceira fonte fixa ou aceitar fonte dinamica.
