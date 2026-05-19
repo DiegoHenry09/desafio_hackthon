@@ -4,10 +4,20 @@ from schemas.conteudo import (
     ConteudoResponse,
     TipoViolenciaResponse,
 )
+from schemas.chat import (
+    ChatHistoricoItem,
+    ChatRequest,
+    ChatResponse,
+    FonteConsultada,
+)
 
 __all__ = [
     "BuscaResponse",
+    "ChatHistoricoItem",
+    "ChatRequest",
+    "ChatResponse",
     "ConteudoListItem",
     "ConteudoResponse",
+    "FonteConsultada",
     "TipoViolenciaResponse",
 ]

@@ -344,3 +344,114 @@ Revisao Education/QA + Sensitive Content Reviewer realizada sobre os rascunhos d
 - Ajustar `MINI-001`, `MINI-005` e `SIM-002` antes de eventual entrada no MVP.
 - Manter `MINI-002` fora do MVP, salvo nova curadoria humana com frase neutra validada.
 - Frontend deve renderizar atividades aprovadas com aviso educativo, fontes e sem score/veredito sensivel.
+
+## 2026-05-19 — Chat orientativo com RAG e fallback
+
+### Etapa atual
+
+API minima do chat orientativo implementada no backend, com RAG simples sobre SQLite, guardrails, chamada opcional ao Gemini e fallback para manter a demo funcionando sem depender da IA ao vivo.
+
+### Arquivos gerados ou atualizados
+
+- `backend/app.py`
+- `backend/config.py`
+- `backend/pyproject.toml`
+- `backend/routers/__init__.py`
+- `backend/routers/chat.py`
+- `backend/schemas/__init__.py`
+- `backend/schemas/chat.py`
+- `backend/services/__init__.py`
+- `backend/services/rag.py`
+- `backend/services/guardrails.py`
+- `backend/services/gemini_client.py`
+- `docs/api.md`
+- `docs/09_HANDOFF.md`
+
+### Decisoes implementadas
+
+- `POST /chat` recebe `mensagem`, `session_id` e historico opcional.
+- RAG usa apenas registros com `usage_policy = rag_allowed_with_guardrails`.
+- `blocked_until_review`, `exclude_from_rag` e `library_only` nao entram como contexto automatico do chat.
+- Gemini usa `GEMINI_API_KEY`, `GEMINI_MODEL` e timeout via ambiente local.
+- Se chave, SDK, Gemini, safety filter ou timeout falharem, a API retorna fallback com fontes.
+- Conversa nao e persistida em banco.
+- Nenhuma tabela de chat foi criada.
+
+### Regras preservadas
+
+- JSON curado nao foi alterado.
+- Conteudo textual da base nao foi alterado.
+- Nenhum frontend foi implementado.
+- Nenhum quiz, simulador ou cenario foi gerado.
+- Nenhum segredo foi registrado.
+- Nao houve commit/push nesta etapa.
+
+### Validacoes realizadas
+
+- Import da aplicacao FastAPI confirmou rotas `/health`, `/busca` e `/chat`.
+- `POST /chat` retornou HTTP 200 para as 5 perguntas criticas solicitadas.
+- Todas as respostas do smoke test usaram fallback local porque `GEMINI_API_KEY` nao esta configurada neste ambiente.
+- Perguntas sensiveis retornaram fontes consultadas.
+- Pergunta off-topic sobre JavaScript foi redirecionada sem chamar Gemini.
+- Pergunta sobre violencia sexual retornou `gravidade_detectada = alta`.
+- Nenhuma resposta do smoke test continha frases proibidas como veredito de assedio ou crime.
+- Validacao de politica confirmou fontes do RAG apenas com `usage_policy = rag_allowed_with_guardrails`.
+- `python -m compileall app.py config.py database.py models routers schemas services` executou sem erro.
+
+### Pendencias
+
+- Instalar dependencia `google-generativeai` no ambiente, se ainda nao estiver instalada.
+- Configurar `GEMINI_API_KEY` em `.env` local para testar Gemini real.
+- Revisar respostas sensiveis com humano antes da demo.
+## 2026-05-19 — Ajuste critico do RAG para jornada da testemunha
+
+### Etapa atual
+
+Revisao Backend/IA Responsavel + Auditor Critico aplicada ao chat orientativo para garantir que a pergunta demonstravel da jornada da testemunha recupere a fonte principal correta.
+
+### Arquivos gerados ou atualizados
+
+- `backend/services/rag.py`
+- `docs/api.md`
+- `docs/09_HANDOFF.md`
+
+### Decisoes implementadas
+
+- O RAG continua usando automaticamente apenas registros com `usage_policy = rag_allowed_with_guardrails`.
+- A busca de contexto passou a considerar a camada educativa no texto pesquisavel.
+- Perguntas com intencao de testemunha e cuidado recebem reforco controlado para fontes da demo:
+  - `source_id 95` como fonte principal;
+  - `source_id 200` como apoio;
+  - `source_id 204` como apoio de cultura/percepcao.
+- A priorizacao nao altera o JSON curado e nao permite `blocked_until_review`, `exclude_from_rag` ou `library_only` como contexto automatico.
+
+### Evidencias
+
+- Antes do ajuste, a pergunta "Sou testemunha de uma situacao desconfortavel. Como posso apoiar sem expor a pessoa afetada?" retornava fontes nao alinhadas ao diferencial da demo: `103`, `207`, `213`.
+- Depois do ajuste, a mesma pergunta retorna `95`, `200`, `204`, todos com `usage_policy = rag_allowed_with_guardrails`.
+- `source_id 95` foi conferido no JSON curado como tema "Todos cuidam de todos.", `source_row 51`, camada 7, `usage_policy = rag_allowed_with_guardrails`.
+- `source_id 200` e `source_id 204` foram conferidos como fontes de apoio permitidas com guardrails.
+
+### Regras preservadas
+
+- Nenhum frontend foi criado ou alterado.
+- Nenhum quiz foi criado.
+- Nenhum simulador foi criado.
+- JSON curado nao foi alterado.
+- Conteudo da base nao foi reescrito.
+- Nenhuma tabela de chat foi criada.
+- Conversa sensivel nao foi persistida.
+- Nenhum segredo Gemini foi exposto.
+- Nao houve commit/push nesta etapa.
+
+### Riscos
+
+- `source_id 200` tem linguagem mais imperativa; respostas precisam manter linguagem de sinais, cuidado e nao obrigacao juridica.
+- A priorizacao por intencao e simples e desenhada para o MVP; consultas muito ambíguas ainda podem depender do fallback ou de refinamento futuro.
+- Sem `GEMINI_API_KEY` local, a demo deve usar fallback com fontes, o que ainda prova rastreabilidade mas nao prova chamada real ao Gemini.
+
+### Pendencias
+
+- Testar `POST /chat` com Gemini real quando `GEMINI_API_KEY` estiver configurada.
+- Revisar humanamente a resposta final do Gemini para a pergunta da demo.
+- Ensaiar fallback como plano B caso Gemini bloqueie, falhe ou demore.

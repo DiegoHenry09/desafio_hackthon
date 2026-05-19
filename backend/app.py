@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import busca_router, conteudos_router
+from routers import busca_router, chat_router, conteudos_router
 
 
 app = FastAPI(
@@ -14,12 +14,13 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
 app.include_router(conteudos_router)
 app.include_router(busca_router)
+app.include_router(chat_router)
 
 
 @app.get("/health")
