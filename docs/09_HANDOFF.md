@@ -345,6 +345,42 @@ Revisao Education/QA + Sensitive Content Reviewer realizada sobre os rascunhos d
 - Manter `MINI-002` fora do MVP, salvo nova curadoria humana com frase neutra validada.
 - Frontend deve renderizar atividades aprovadas com aviso educativo, fontes e sem score/veredito sensivel.
 
+## 2026-05-19 — Plano MVP e demo
+
+### Etapa atual
+
+Plano Product/Delivery Architect criado para consolidar o MVP demonstravel do hackathon e orientar frontend, backend, chat, quiz, simulador e apresentacao.
+
+### Arquivos gerados ou atualizados
+
+- `docs/15_PLANO_MVP_E_DEMO.md`
+- `docs/09_HANDOFF.md`
+
+### Decisoes de MVP documentadas
+
+- Demo deve provar a tese educacional com responsabilidade: Biblioteca + Busca + Pratica + Simulador + Chat/Fallback + Canais.
+- Fluxo principal recomendado: Home -> Biblioteca -> Busca -> Quiz/Miniatividade -> Simulador -> Chat orientativo -> Fontes/limites -> Encaminhamento seguro.
+- Atividades principais para demo: `QUIZ-001`, `QUIZ-002`, `QUIZ-006`, `QUIZ-010`, `MINI-004`, `MINI-006`, `MINI-003`, `SIM-003` e `SIM-001`.
+- Atividades de reserva: demais quizzes aprovados, `MINI-001`, `MINI-005` e `SIM-002` apos ajustes.
+- `MINI-002`, score/ranking, canal de denuncia, parecer juridico, login, admin e personalizacao ficam fora do MVP.
+- Chat deve ser demonstrado como orientador educativo com fontes, limites, `usage_policy` e fallback.
+
+### Regras preservadas
+
+- Nenhum backend foi implementado.
+- Nenhum frontend foi implementado.
+- JSON curado nao foi alterado.
+- Nenhuma atividade nova foi criada.
+- Nao houve commit/push nesta etapa.
+
+### Pendencias
+
+- Frontend implementar telas minimas da demo e respeitar comportamento thin client.
+- Backend expor endpoints futuros para atividades/simulador/chat, caso entre no escopo de implementacao.
+- Ensaiar fluxo em ate 6 minutos.
+- Testar chat com fallback antes da apresentacao.
+- Revisar `git status` e fazer commit/push apenas com autorizacao humana.
+
 ## 2026-05-19 — Chat orientativo com RAG e fallback
 
 ### Etapa atual
@@ -403,6 +439,73 @@ API minima do chat orientativo implementada no backend, com RAG simples sobre SQ
 - Instalar dependencia `google-generativeai` no ambiente, se ainda nao estiver instalada.
 - Configurar `GEMINI_API_KEY` em `.env` local para testar Gemini real.
 - Revisar respostas sensiveis com humano antes da demo.
+
+## 2026-05-19 — Diferencial demonstravel da demo
+
+### Etapa atual
+
+Revisao Product/QA critica aplicada ao plano de demo para fechar o diferencial demonstravel em uma jornada unica de testemunha, sem implementar codigo.
+
+### Arquivos gerados ou atualizados
+
+- `docs/15_PLANO_MVP_E_DEMO.md`
+- `docs/09_HANDOFF.md`
+
+### Decisoes registradas
+
+- Diferencial da demo: jornada da testemunha.
+- Pratica principal: `QUIZ-010`.
+- Simulador principal: `SIM-003 — Testemunha e apoio cuidadoso`.
+- Pergunta do chat: "Sou testemunha de uma situacao desconfortavel. Como posso apoiar sem expor a pessoa afetada?"
+- Fonte principal do chat: `source_id 95`, tema "Todos cuidam de todos.", `usage_policy = rag_allowed_with_guardrails`.
+- Fontes de apoio: `source_id 200` e `source_id 204`, apenas com guardrails e linguagem de sinais.
+- Se a demo passar de 6 minutos, cortar detalhe de biblioteca, `QUIZ-010` ou chat ao vivo.
+- Nunca cortar aviso educativo, fontes/`source_id`, `SIM-003` e Canais.
+
+### Evidencias e documentos consultados
+
+- `README.md`
+- `docs/01_ARQUITETURA_PRODUTO.md`
+- `docs/02_ARQUITETURA_TECNICA.md`
+- `docs/03_IA_RESPONSAVEL.md`
+- `docs/11_ABORDAGEM_EDUCACIONAL_E_TEMA.md`
+- `docs/12_MATRIZ_CONTEUDO_E_ATIVIDADES.md`
+- `docs/13_BANCO_RASCUNHO_QUIZ_E_ATIVIDADES.md`
+- `docs/14_VALIDACAO_MVP_ATIVIDADES.md`
+- `docs/15_PLANO_MVP_E_DEMO.md`
+- `backend/seed/conteudo_normalizado.curated.preview.json`
+
+### Critica Product/QA registrada
+
+- `MINI-004` e seguro e rapido, mas pouco diferencial para banca porque demonstra apenas uma mecanica simples de verdadeiro/falso.
+- `QUIZ-001` e claro, mas fraco como diferencial porque fica em conceito basico.
+- `MINI-006` tem alto valor, mas pode duplicar o efeito de `SIM-003`; fica como reserva se o time preferir mostrar miniatividade em vez de quiz.
+- `QUIZ-010` + `SIM-003` + chat com `source_id 95` formam a narrativa mais pontuavel: testemunha aprende, decide, pergunta, ve fonte e entende limites.
+
+### Regras preservadas
+
+- Nenhum codigo foi implementado.
+- Nenhum backend foi alterado.
+- Nenhum frontend foi alterado.
+- JSON curado nao foi alterado.
+- Nenhuma API foi alterada.
+- Nenhuma atividade nova foi criada fora de `docs/13` e `docs/14`.
+- Nao houve commit/push nesta etapa.
+
+### Riscos
+
+- `source_id 200` tem linguagem mais imperativa; na demo deve aparecer com guardrails, sem transformar apoio de testemunha em obrigacao juridica.
+- Chat ao vivo pode falhar por API key, timeout, cota ou safety filter; fallback com fontes precisa estar pronto.
+- Cortar demais a abertura de biblioteca pode reduzir prova de rastreabilidade; manter pelo menos busca curta e fonte visivel.
+- Qualquer fala da apresentacao que pareca veredito, como "isso e assedio", derruba a tese de IA responsavel.
+
+### Pendencias
+
+- Ensaiar roteiro completo em ate 6 minutos.
+- Validar visualmente que Home, Chat, Simulador e Canais exibem aviso educativo.
+- Garantir que a resposta do chat cite `source_id 95` ou que o fallback mostre essa fonte.
+- Revisar copy final de `QUIZ-010` e `SIM-003` com humano antes da demo.
+
 ## 2026-05-19 — Ajuste critico do RAG para jornada da testemunha
 
 ### Etapa atual
@@ -455,3 +558,56 @@ Revisao Backend/IA Responsavel + Auditor Critico aplicada ao chat orientativo pa
 - Testar `POST /chat` com Gemini real quando `GEMINI_API_KEY` estiver configurada.
 - Revisar humanamente a resposta final do Gemini para a pergunta da demo.
 - Ensaiar fallback como plano B caso Gemini bloqueie, falhe ou demore.
+
+## 2026-05-19 — Auditoria comparativa dos modelos do chat
+
+### Etapa atual
+
+Auditoria Documentation/QA + IA Responsavel documentada para escolher o modelo do chat orientativo da demo com base em estabilidade, guardrails, fontes e valor educacional.
+
+### Arquivos gerados ou atualizados
+
+- `docs/16_AUDITORIA_MODELOS_CHAT.md`
+- `docs/07_DECISOES_TECNICAS.md`
+- `docs/15_PLANO_MVP_E_DEMO.md`
+- `docs/api.md`
+- `docs/09_HANDOFF.md`
+
+### Resultado da auditoria
+
+- Modelos comparados: `gemini-3.1-flash-lite`, `gemini-2.5-flash` e `gemini-3.1-pro-preview`.
+- `gemini-3.1-flash-lite` foi o unico modelo validado nos 6 cenarios, com Gemini real nos 5 cenarios de dominio, fontes corretas e sem timeout.
+- `gemini-2.5-flash` ficou parcial por timeout em cenarios criticos da demo, apesar de servir como modelo reserva.
+- `gemini-3.1-pro-preview` ficou parcial por timeout nos cenarios de dominio e nao e recomendado para demo com o timeout atual.
+- Estrategia recomendada: Gemini ao vivo com fallback automatico obrigatorio.
+- Parametro recomendado para o ambiente local da demo: `GEMINI_MODEL=gemini-3.1-flash-lite`.
+
+### Evidencias registradas
+
+- Cenarios testados: testemunha/apoio sem expor, pergunta com risco de veredito, conceito basico, piadas sobre corpo, violencia sexual e off-topic JavaScript.
+- Todas as fontes retornadas nos cenarios de dominio respeitaram `usage_policy = rag_allowed_with_guardrails`.
+- A pergunta da jornada da testemunha retornou `source_id 95` junto de fontes de apoio.
+- Nenhuma evidencia resumida registrou violacao textual dos guardrails como "isso e assedio", "isso e crime", "voce foi vitima", "voce deve processar" ou promessa de confidencialidade.
+
+### Regras preservadas
+
+- Nenhum codigo foi implementado ou alterado nesta etapa.
+- JSON curado nao foi alterado.
+- Frontend nao foi alterado.
+- `.env` nao foi alterado.
+- Nenhuma chave Gemini foi exposta.
+- Nenhuma conversa sensivel foi persistida.
+- Nao houve commit/push.
+
+### Riscos
+
+- O pacote `google.generativeai` emitiu aviso de deprecacao; migracao para SDK mais novo deve ser avaliada pos-demo.
+- `gemini-2.5-flash` e `gemini-3.1-pro-preview` dependeram de fallback por timeout em varios cenarios.
+- Fallback e seguro, mas menos especifico; precisa ser ensaiado e apresentado como decisao de responsabilidade.
+- `source_id 200` pode soar imperativo; respostas e fala da demo devem manter linguagem de sinais, cuidado e nao obrigacao juridica.
+
+### Pendencias
+
+- Configurar `GEMINI_MODEL=gemini-3.1-flash-lite` no `.env` local somente com autorizacao humana.
+- Revalidar `POST /chat` perto da demo, na mesma rede e maquina usadas na apresentacao.
+- Ensaiar fallback automatico e resposta off-topic antes da apresentacao.

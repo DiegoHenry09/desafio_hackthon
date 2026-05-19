@@ -5,7 +5,7 @@
 ## DEC-001 — Stack do MVP
 
 - **Estado:** DECIDIDO
-- **Decisao:** usar Python/FastAPI no backend, React/Vite/TypeScript no frontend, SQLite como banco local e Gemini 2.5 Flash para a camada de IA.
+- **Decisao:** usar Python/FastAPI no backend, React/Vite/TypeScript no frontend, SQLite como banco local e Gemini configuravel por `GEMINI_MODEL` para a camada de IA.
 - **Motivo:** stack simples para hackathon, boa geracao assistida por LLM, setup local baixo e suficiente para cerca de 60 microconteudos.
 - **Impacto:** backend sera a fonte da verdade; frontend sera thin client; SQLite recebera seeds derivados de JSON curado.
 
@@ -69,3 +69,13 @@
 - **Decisao:** a planilha original `.xlsx` deve ficar fora do repositorio publico ate autorizacao humana explicita.
 - **Motivo:** contem conteudo sensivel e e fonte proprietaria/curada da Byst.end.
 - **Impacto:** `.gitignore` bloqueia arquivos `.xlsx`; o artefato versionavel atual e o JSON curado.
+
+## DEC-009 — Modelo Gemini para demo do chat
+
+- **Estado:** DECIDIDO PARA DEMO
+- **Decisao:** usar `gemini-3.1-flash-lite` como modelo recomendado para a demo do chat orientativo, mantendo fallback automatico obrigatorio.
+- **Modelo reserva:** `gemini-2.5-flash`.
+- **Modelo nao recomendado para demo:** `gemini-3.1-pro-preview`, por timeout nos cenarios de dominio com o timeout atual.
+- **Motivo:** auditoria comparativa em 6 cenarios indicou que `gemini-3.1-flash-lite` foi o unico modelo validado em todos os cenarios, com Gemini real nos 5 cenarios de dominio, fontes corretas e sem timeout.
+- **Impacto:** ambiente de demo deve usar `GEMINI_MODEL=gemini-3.1-flash-lite`, sem registrar chave em documento ou versionamento. A demo continua dependendo de fallback ensaiado para casos de rede, cota, safety block ou indisponibilidade.
+- **Evidencia:** `docs/16_AUDITORIA_MODELOS_CHAT.md`.
