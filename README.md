@@ -26,7 +26,7 @@ Escopo previsto para o MVP:
 - Chat de apoio contextual com RAG, fontes citadas e guardrails.
 - Avisos educativos e links para canais oficiais.
 
-Fora do estado atual: backend, frontend, chat, quiz, simulador e cenarios ainda nao foram implementados.
+Estado atual: backend minimo FastAPI + SQLite implementado para biblioteca e busca. Frontend, chat, quiz, simulador e cenarios ainda nao foram implementados.
 
 ## Stack Prevista
 
@@ -40,13 +40,14 @@ Fora do estado atual: backend, frontend, chat, quiz, simulador e cenarios ainda 
 
 Estado atual do repositorio:
 
-- Documentacao de governanca e arquitetura existente em `docs/`.
+- Documentacao de governanca, produto e arquitetura existente em `docs/`.
 - Artefato intermediario de conteudo gerado em `backend/seed/conteudo_normalizado.curated.preview.json`.
 - JSON curado contem 60 registros vindos da aba `2.3. NANO CONTEUDOS`.
 - Todos os registros preservam `source_sheet`, `source_row`, `source_id` e `usage_policy`.
 - O conteudo dos registros nao foi reescrito.
 - Ortografia da planilha nao foi corrigida.
-- Nenhum backend, frontend, chat, quiz ou simulador foi gerado ainda.
+- Backend minimo FastAPI + SQLite foi gerado para conteudos, tipos de violencia e busca.
+- Nenhum frontend, chat, quiz ou simulador foi gerado ainda.
 
 Contagem por `usage_policy`:
 
@@ -82,7 +83,7 @@ Esta plataforma e educativa. Ela nao substitui RH, juridico, compliance, canal o
 
 ## Como Rodar Futuramente
 
-Ainda nao ha aplicacao executavel. Quando as camadas forem implementadas, o fluxo previsto sera:
+Backend minimo:
 
 ```bash
 # Backend
@@ -93,7 +94,21 @@ python -m pip install --upgrade pip
 pip install -e ".[dev]"
 python -m seed.seed_planilha
 uvicorn app:app --reload --port 8000
+```
 
+Endpoints disponiveis:
+
+```text
+GET /health
+GET /conteudos
+GET /conteudos/{id}
+GET /tipos-violencia
+GET /busca?q=assedio
+```
+
+Frontend futuro:
+
+```bash
 # Frontend
 cd frontend
 npm install
@@ -106,9 +121,8 @@ Variaveis esperadas estao em `.env.example`. O arquivo `.env` real nao deve ser 
 
 1. Revisar humanamente o JSON curado, especialmente o registro `source_id 197`.
 2. Gerar `conteudo_normalizado.final.json` somente apos aceite humano.
-3. Criar seed SQLite a partir do JSON final.
-4. Implementar endpoints de conteudo e busca.
-5. Implementar frontend com mock e depois integrar front/back.
-6. Criar quiz, jogos e simulador com curadoria humana.
-7. Implementar chat/RAG com guardrails e fontes citadas.
-8. Registrar evidencias de validacao em `docs/09_HANDOFF.md`.
+3. Revisar se o seed deve migrar de `.preview` para JSON final aprovado.
+4. Implementar frontend com mock e depois integrar front/back.
+5. Criar quiz, jogos e simulador com curadoria humana.
+6. Implementar chat/RAG com guardrails e fontes citadas.
+7. Registrar evidencias de validacao em `docs/09_HANDOFF.md`.

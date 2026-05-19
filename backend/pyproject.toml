@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bystend-backend"
+version = "0.1.0"
+description = "Backend FastAPI minimo para a plataforma educativa Byst.end."
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlalchemy",
+  "pydantic",
+]
+
+[project.optional-dependencies]
+dev = []
+
+[tool.setuptools]
+py-modules = ["app", "config", "database"]
+packages = ["models", "routers", "schemas", "seed"]

@@ -44,7 +44,7 @@ Este documento define **como o time opera a IA com segurança**.
 │   - Endpoints /conteudos, /tipos-violencia, /busca          │
 │   - Páginas /biblioteca, /trilha/:slug, /conteudo/:id       │
 ├─────────────────────────────────────────────────────────────┤
-│ OPERADOR B — SIMULADOR DE CONDUTAS                          │
+│ OPERADOR B — RADAR DE CONDUTAS                        │
 │ Domínio: cenários curados, lógica de feedback, telas        │
 │ Stack: JSON + FastAPI + React (Simulador, Cenário)          │
 │ Entregáveis principais:                                      │

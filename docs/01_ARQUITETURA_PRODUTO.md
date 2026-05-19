@@ -181,7 +181,7 @@ Home
 
 ---
 
-## 10. Fluxo detalhado: Simulador de Condutas
+## 10. Fluxo detalhado: Radar de Conduta
 
 Cenário tem estrutura JSON:
 

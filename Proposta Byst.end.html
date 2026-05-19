@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Proposta Visual/UX — Byst.end</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Tons base — neutro quente */
+    --bg:        #FAF7F2;          /* papel quente */
+    --bg-2:      #F2EDE4;          /* faixa */
+    --bg-3:      #E8E1D4;          /* divisor sutil */
+    --ink:       #1B1A17;          /* tinta principal */
+    --ink-2:     #45433D;          /* secundária */
+    --ink-3:     #7A776E;          /* terciária / metadado */
+    --line:      #DCD5C6;          /* linhas */
+    --paper:     #FFFFFF;          /* cards */
+
+    /* Acento primário — sage / verde acolhedor (confiança calma) */
+    --sage-50:   oklch(0.97 0.018 160);
+    --sage-100:  oklch(0.93 0.030 160);
+    --sage-300:  oklch(0.78 0.050 160);
+    --sage-500:  oklch(0.55 0.060 160);
+    --sage-700:  oklch(0.38 0.055 160);
+    --sage-900:  oklch(0.24 0.040 160);
+
+    /* Acento educativo — âmbar (avisos, NÃO vermelho) */
+    --amber-50:  oklch(0.96 0.030 80);
+    --amber-200: oklch(0.88 0.080 80);
+    --amber-500: oklch(0.70 0.130 75);
+    --amber-700: oklch(0.48 0.110 70);
+
+    /* Sinal crítico — coral discreto (canais oficiais / urgência humana) */
+    --coral-50:  oklch(0.96 0.025 30);
+    --coral-500: oklch(0.62 0.130 28);
+    --coral-700: oklch(0.44 0.110 28);
+
+    /* Info — azul-ardósia (referências / fontes) */
+    --slate-50:  oklch(0.96 0.018 250);
+    --slate-500: oklch(0.55 0.055 250);
+    --slate-700: oklch(0.38 0.050 250);
+
+    --radius-sm: 6px;
+    --radius:    10px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+
+    --shadow-sm: 0 1px 0 rgba(27,26,23,.04), 0 1px 2px rgba(27,26,23,.04);
+    --shadow:    0 1px 0 rgba(27,26,23,.04), 0 8px 24px -12px rgba(27,26,23,.12);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .serif{font-family:"Source Serif 4", Georgia, serif; font-weight:500;}
+  .mono{font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.82em;}
+
+  a{color:var(--sage-700); text-underline-offset:3px;}
+  hr.rule{border:0;border-top:1px solid var(--line); margin:48px 0;}
+
+  /* ======================= LAYOUT ======================= */
+  .wrap{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .doc{
+    display:grid;
+    grid-template-columns: 240px 1fr;
+    gap: 56px;
+    padding: 56px 0 120px;
+  }
+  @media (max-width: 960px){
+    .doc{grid-template-columns:1fr; gap:24px;}
+    .toc{position:static !important;}
+  }
+
+  /* TOC */
+  .toc{
+    position:sticky; top:24px; align-self:start;
+    font-size:13.5px;
+    color:var(--ink-2);
+  }
+  .toc .label{
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-3); margin-bottom:14px;
+  }
+  .toc ol{list-style:none; padding:0; margin:0; counter-reset:toc;}
+  .toc li{counter-increment:toc; margin:6px 0;}
+  .toc li::before{
+    content: counter(toc,decimal-leading-zero) "  ";
+    font-family:"JetBrains Mono", monospace;
+    font-size:11px;
+    color:var(--ink-3);
+    margin-right:6px;
+  }
+  .toc a{
+    color:var(--ink-2);
+    text-decoration:none;
+    display:inline;
+    border-bottom:1px solid transparent;
+  }
+  .toc a:hover{color:var(--ink); border-bottom-color:var(--sage-500);}
+
+  /* ======================= HERO ======================= */
+  .hero{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(120% 80% at 80% -10%, var(--sage-50) 0%, transparent 55%),
+      var(--bg);
+  }
+  .hero-inner{
+    padding: 80px 0 64px;
+    display:grid; grid-template-columns: 1.4fr 1fr; gap:64px; align-items:end;
+  }
+  @media (max-width: 960px){ .hero-inner{grid-template-columns:1fr; gap:32px;} }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:"JetBrains Mono", monospace; font-size:12px;
+    color:var(--ink-3);
+    margin-bottom:24px;
+  }
+  .eyebrow .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--sage-500); display:inline-block;
+  }
+  h1.title{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-weight:500;
+    font-size: clamp(40px, 5.2vw, 68px);
+    line-height:1.04;
+    letter-spacing:-0.015em;
+    margin:0 0 24px;
+    text-wrap:balance;
+  }
+  h1.title em{
+    font-style:italic;
+    color:var(--sage-700);
+  }
+  .lede{
+    max-width: 56ch;
+    font-size:18px;
+    color:var(--ink-2);
+    line-height:1.55;
+    text-wrap:pretty;
+  }
+  .meta{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px 32px;
+    font-size:13.5px;
+    color:var(--ink-2);
+    padding-top: 8px;
+    border-top:1px solid var(--line);
+  }
+  .meta dt{font-family:"JetBrains Mono", monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); margin-bottom:4px;}
+  .meta dd{margin:0 0 12px; line-height:1.45;}
+
+  /* ======================= SECTION ======================= */
+  section.s{padding: 8px 0 0; scroll-margin-top: 24px;}
+  .s + .s{margin-top:64px;}
+  .s-num{
+    font-family:"JetBrains Mono", monospace; font-size:12px;
+    color:var(--ink-3); letter-spacing:0.08em;
+  }
+  h2.h{
+    font-family:"Source Serif 4", Georgia, serif;
+    font-weight:500;
+    font-size: clamp(28px, 3vw, 38px);
+    letter-spacing:-0.01em;
+    margin: 4px 0 8px;
+    line-height:1.15;
+  }
+  h3.sh{
+    font-family:"Geist", sans-serif;
+    font-weight:600;
+    font-size: 14px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--ink);
+    margin: 28px 0 12px;
+  }
+  h4{
+    font-family:"Geist", sans-serif;
+    font-weight:600;
+    font-size:15px;
+    margin: 0 0 8px;
+  }
+  p.sub{ color:var(--ink-2); max-width: 70ch; margin: 0 0 24px; }
+
+  /* utility grid */
+  .grid{display:grid; gap:20px;}
+  .g-2{grid-template-columns:repeat(2, minmax(0,1fr));}
+  .g-3{grid-template-columns:repeat(3, minmax(0,1fr));}
+  .g-4{grid-template-columns:repeat(4, minmax(0,1fr));}
+  @media (max-width: 720px){
+    .g-2,.g-3,.g-4{grid-template-columns:1fr;}
+  }
+
+  /* card base */
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+  }
+  .card h4{margin-bottom:6px;}
+  .card p{margin:0; color:var(--ink-2); font-size:14.5px; line-height:1.5;}
+  .card .mono{color:var(--ink-3);}
+
+  /* ============ CONCEITO ============ */
+  .pillars{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  @media (max-width: 720px){ .pillars{grid-template-columns:1fr 1fr;} }
+  .pillar{
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px; font-size:14px;
+  }
+  .pillar .k{font-family:"JetBrains Mono", monospace; font-size:10.5px; color:var(--ink-3); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;}
+  .pillar .v{font-weight:600; color:var(--ink); margin-bottom:6px; font-size:15px;}
+  .pillar .d{color:var(--ink-2); line-height:1.45;}
+
+  .avoid{
+    display:grid; grid-template-columns:1fr 1fr; gap:28px;
+    background: var(--bg-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:24px;
+    margin-top:24px;
+  }
+  @media (max-width: 720px){ .avoid{grid-template-columns:1fr;} }
+  .avoid ul{margin:0; padding:0 0 0 18px; color:var(--ink-2); font-size:14.5px; line-height:1.7;}
+  .avoid .head{
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-3); margin-bottom:10px;
+  }
+  .avoid .do .head{color:var(--sage-700);}
+  .avoid .dont .head{color:var(--coral-700);}
+
+  /* ============ DESIGN SYSTEM ============ */
+  .palette{
+    display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+  }
+  @media (max-width: 900px){ .palette{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width: 520px){ .palette{grid-template-columns:repeat(2,1fr);} }
+  .swatch{
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .swatch .chip{
+    aspect-ratio: 5/3;
+    border-bottom:1px solid var(--line);
+  }
+  .swatch .meta{
+    padding:10px 12px;
+    display:block;
+  }
+  .swatch .name{font-weight:600; font-size:13px;}
+  .swatch .code{font-family:"JetBrains Mono", monospace; color:var(--ink-3); font-size:11.5px; margin-top:2px;}
+  .swatch .role{font-size:12px; color:var(--ink-2); margin-top:4px;}
+
+  .type-spec{
+    display:grid; grid-template-columns: 220px 1fr; gap:24px;
+    padding:24px; border:1px solid var(--line); background:var(--paper);
+    border-radius:var(--radius-lg);
+  }
+  @media (max-width:720px){ .type-spec{grid-template-columns:1fr;} }
+  .type-spec .label{
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-3);
+  }
+  .type-spec .label b{display:block; color:var(--ink); font-size:14px; font-family:"Geist", sans-serif; letter-spacing:0; text-transform:none; margin-top:4px;}
+  .type-sample{display:block; color:var(--ink); margin:0;}
+  .ts-display{font-family:"Source Serif 4", serif; font-size:54px; line-height:1.04; letter-spacing:-0.015em; font-weight:500;}
+  .ts-h1{font-family:"Source Serif 4", serif; font-size:36px; line-height:1.1; font-weight:500;}
+  .ts-h2{font-family:"Geist", sans-serif; font-size:22px; line-height:1.25; font-weight:600;}
+  .ts-body{font-family:"Geist", sans-serif; font-size:16px; line-height:1.55;}
+  .ts-cap{font-family:"JetBrains Mono", monospace; font-size:12px; color:var(--ink-3); letter-spacing:0.06em;}
+
+  .scale{
+    display:grid; grid-template-columns:repeat(8, 1fr); gap:8px;
+    align-items:end;
+  }
+  .scale .step{
+    background:var(--sage-100); border:1px solid var(--sage-300);
+    border-radius:6px; padding:8px;
+    font-family:"JetBrains Mono", monospace; font-size:11px; color:var(--sage-900);
+    text-align:center;
+  }
+  .scale .step b{display:block; font-family:"Geist", sans-serif; font-size:13px; color:var(--ink); margin-bottom:6px;}
+  .bar{background:var(--sage-500); width:100%;}
+
+  /* component demo */
+  .demo{
+    background:var(--paper); border:1px solid var(--line);
+    border-radius: var(--radius-lg); padding:24px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    height:44px; padding:0 18px; border-radius:999px;
+    font-family:"Geist", sans-serif; font-size:15px; font-weight:500;
+    border:1px solid transparent; cursor:pointer;
+    transition: background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--bg);}
+  .btn-primary:hover{background:var(--sage-900);}
+  .btn-secondary{background:var(--paper); color:var(--ink); border-color:var(--line);}
+  .btn-secondary:hover{border-color:var(--ink); background:var(--bg);}
+  .btn-ghost{background:transparent; color:var(--ink); padding:0 12px;}
+  .btn-ghost:hover{background:var(--bg-2);}
+  .btn-danger{background:var(--coral-50); color:var(--coral-700); border:1px solid color-mix(in oklab, var(--coral-500) 30%, transparent);}
+  .btn-row{display:flex; flex-wrap:wrap; gap:10px;}
+
+  /* alerts */
+  .alert{
+    border-radius: var(--radius);
+    padding:14px 16px;
+    display:grid; grid-template-columns:6px 1fr; gap:14px;
+    align-items:start;
+    font-size:14px; line-height:1.55;
+  }
+  .alert .stripe{ width:6px; height:100%; border-radius:3px; }
+  .alert b{display:block; font-weight:600; color:var(--ink); margin-bottom:2px;}
+  .alert.educativo{ background: var(--amber-50); border:1px solid var(--amber-200); color:var(--ink-2);}
+  .alert.educativo .stripe{ background: var(--amber-500); }
+  .alert.canais{ background: var(--coral-50); border:1px solid color-mix(in oklab, var(--coral-500) 25%, transparent); color:var(--ink-2);}
+  .alert.canais .stripe{ background:var(--coral-500); }
+  .alert.fonte{ background: var(--slate-50); border:1px solid color-mix(in oklab, var(--slate-500) 25%, transparent); color:var(--ink-2);}
+  .alert.fonte .stripe{ background:var(--slate-500); }
+  .alert.limite{ background:var(--bg-2); border:1px solid var(--line); color:var(--ink-2);}
+  .alert.limite .stripe{ background:var(--ink-3); }
+
+  /* badges */
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    height:24px; padding:0 10px; border-radius:999px;
+    font-family:"JetBrains Mono", monospace; font-size:11px; letter-spacing:0.04em;
+    border:1px solid var(--line); background:var(--paper); color:var(--ink-2);
+  }
+  .badge::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--ink-3); }
+  .badge.public::before{ background:var(--sage-500); }
+  .badge.educational::before{ background:var(--amber-500); }
+  .badge.restricted::before{ background:var(--coral-500); }
+  .badge.internal::before{ background:var(--slate-500); }
+
+  /* sensitive content card */
+  .sens{
+    background: var(--paper); border:1px solid var(--line);
+    border-radius: var(--radius-lg); padding:18px 18px 18px 22px;
+    position:relative;
+  }
+  .sens::before{
+    content:""; position:absolute; left:0; top:14px; bottom:14px; width:3px;
+    background:var(--amber-500); border-radius:2px;
+  }
+  .sens .lbl{
+    font-family:"JetBrains Mono", monospace; font-size:11px; color:var(--amber-700);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;
+  }
+
+  /* ============ SCREENS / WIREFRAMES ============ */
+  .screens{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:20px;
+  }
+  @media (max-width: 900px){ .screens{grid-template-columns:1fr;} }
+  .screen{
+    background: var(--paper);
+    border:1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .screen .frame{
+    height: 280px;
+    background: var(--bg);
+    border-bottom:1px solid var(--line);
+    padding:14px;
+    position:relative;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .screen .meta{
+    padding:14px 18px 16px;
+  }
+  .screen .meta .tag{
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+    letter-spacing:0.08em; color:var(--ink-3); text-transform:uppercase;
+  }
+  .screen .meta h4{margin:6px 0 4px;}
+  .screen .meta p{margin:0; font-size:13.5px; color:var(--ink-2); line-height:1.5;}
+
+  /* wireframe primitives — DIVS APENAS, sem SVG */
+  .wf-nav{height:18px; border-radius:4px; background:var(--bg-3); width:100%;}
+  .wf-banner{ height:16px; border-radius:4px; background: var(--amber-200); width:100%;}
+  .wf-row{display:flex; gap:8px;}
+  .wf-row.grow > *{ flex:1; }
+  .wf-card{
+    flex:1; background:var(--paper); border:1px solid var(--bg-3);
+    border-radius:8px; height:64px; padding:8px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .wf-line{height:6px; border-radius:3px; background:var(--bg-3);}
+  .wf-line.w70{width:70%;} .wf-line.w50{width:50%;} .wf-line.w40{width:40%;} .wf-line.w30{width:30%;}
+  .wf-pill{height:18px; border-radius:999px; background:var(--bg-3); width:60px;}
+  .wf-pill.on{background:var(--sage-300);}
+  .wf-block{background:var(--bg-2); border:1px dashed var(--bg-3); border-radius:6px;}
+  .wf-search{height:30px; border:1px solid var(--bg-3); background:var(--paper); border-radius:999px; padding:0 10px; display:flex; align-items:center;}
+  .wf-search::before{ content:""; width:6px;height:6px;border-radius:50%; border:1.5px solid var(--ink-3); margin-right:8px; }
+  .wf-search span{height:6px; flex:1; background:var(--bg-3); border-radius:3px;}
+  .wf-chip{height:20px; padding:0 10px; border-radius:999px; border:1px solid var(--bg-3); background:var(--paper); font-family:"JetBrains Mono", monospace; font-size:10px; color:var(--ink-3); display:inline-flex; align-items:center;}
+  .wf-chip.on{background:var(--ink); color:var(--bg); border-color:var(--ink);}
+  .wf-h{font-family:"Source Serif 4", serif; font-size:14px; color:var(--ink); font-weight:500;}
+  .wf-tiny{font-family:"JetBrains Mono", monospace; font-size:10px; color:var(--ink-3);}
+  .wf-bubble-l, .wf-bubble-r{
+    max-width:75%; padding:8px 10px; border-radius:10px; font-size:11px;
+    background:var(--bg-2); border:1px solid var(--bg-3); color:var(--ink-2);
+  }
+  .wf-bubble-r{ align-self:flex-end; background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .wf-bubble-l span{ display:block; height:5px; background:var(--bg-3); border-radius:3px; margin:3px 0; }
+  .wf-bubble-r span{ display:block; height:5px; background:rgba(255,255,255,.35); border-radius:3px; margin:3px 0; }
+  .wf-door{
+    flex:1; border:1px solid var(--bg-3); border-radius:10px;
+    padding:10px; background:var(--paper); display:flex; flex-direction:column; gap:6px; justify-content:space-between;
+  }
+  .wf-door.dark{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .wf-door.dark .wf-line{ background:rgba(255,255,255,.18); }
+  .wf-door.dark .wf-tiny{ color:rgba(255,255,255,.6); }
+
+  /* ============ JORNADA ============ */
+  .journey{
+    border:1px solid var(--line); border-radius:var(--radius-lg);
+    background:var(--paper); padding:24px;
+  }
+  .journey-steps{
+    display:grid; grid-template-columns:repeat(7, 1fr); gap:0;
+    counter-reset: js;
+  }
+  @media (max-width:900px){ .journey-steps{grid-template-columns:repeat(2,1fr); gap:14px;} }
+  .js{
+    counter-increment: js;
+    padding:14px 16px 14px 18px; position:relative;
+    border-right:1px solid var(--line);
+  }
+  @media (max-width:900px){ .js{ border-right:0; border-bottom:1px solid var(--line);} }
+  .js:last-child{border-right:0;}
+  .js .n{
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+    color:var(--ink-3); letter-spacing:0.06em;
+  }
+  .js .n::before{ content: counter(js, decimal-leading-zero); margin-right:6px; color:var(--sage-700);}
+  .js b{display:block; font-size:14px; margin:6px 0 4px;}
+  .js span{display:block; font-size:12.5px; color:var(--ink-2); line-height:1.45;}
+
+  /* ============ COMPONENTES ============ */
+  .comp-list{
+    display:grid; grid-template-columns:repeat(2, 1fr);
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:720px){ .comp-list{grid-template-columns:1fr;} }
+  .comp-list .row{
+    display:grid; grid-template-columns: 220px 1fr;
+    gap:18px; padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .comp-list .row .name{
+    font-family:"JetBrains Mono", monospace; font-size:13px;
+    color:var(--ink); font-weight:500;
+  }
+  .comp-list .row p{margin:0; color:var(--ink-2); font-size:14px; line-height:1.5;}
+
+  /* ============ MVP MATRIX ============ */
+  .mvp{
+    display:grid; grid-template-columns: repeat(3,1fr); gap:16px;
+  }
+  @media (max-width:900px){ .mvp{grid-template-columns:1fr;} }
+  .mvp .col{
+    border:1px solid var(--line); border-radius:var(--radius-lg);
+    padding:18px; background:var(--paper);
+  }
+  .mvp .col header{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:10px;
+  }
+  .mvp .col header b{ font-size:15px; }
+  .mvp .col header .tg{
+    font-family:"JetBrains Mono", monospace; font-size:11px; color:var(--ink-3); letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .mvp .col ul{ margin:0; padding-left:18px; }
+  .mvp .col li{ font-size:14px; color:var(--ink-2); padding:4px 0; }
+  .mvp .col.must{ border-color: color-mix(in oklab, var(--sage-500) 35%, var(--line)); background: color-mix(in oklab, var(--sage-50) 60%, var(--paper)); }
+  .mvp .col.nice{ border-color: color-mix(in oklab, var(--amber-500) 30%, var(--line)); background: color-mix(in oklab, var(--amber-50) 50%, var(--paper)); }
+  .mvp .col.later{ background: var(--bg-2); }
+
+  /* ============ TABLE ============ */
+  table.risk{
+    width:100%; border-collapse:collapse; font-size:14px;
+    border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden;
+    background:var(--paper);
+  }
+  table.risk th, table.risk td{
+    text-align:left; padding:12px 14px; vertical-align:top;
+    border-bottom:1px solid var(--line);
+  }
+  table.risk th{
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-3);
+    background: var(--bg-2);
+  }
+  table.risk tr:last-child td{border-bottom:0;}
+  table.risk .sev{
+    display:inline-block; padding:2px 8px; border-radius:999px;
+    font-family:"JetBrains Mono", monospace; font-size:11px;
+  }
+  .sev.alta{ background:var(--coral-50); color:var(--coral-700); }
+  .sev.media{ background:var(--amber-50); color:var(--amber-700); }
+  .sev.baixa{ background:var(--sage-50); color:var(--sage-700); }
+
+  /* footer */
+  footer.foot{
+    border-top:1px solid var(--line);
+    margin-top:80px;
+    padding: 32px 0 24px;
+    color:var(--ink-3); font-size:13px;
+    display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  }
+  footer.foot .mono{font-size:12px;}
+
+  /* small helpers */
+  .row{display:flex; gap:12px; flex-wrap:wrap;}
+  .stack{display:flex; flex-direction:column; gap:12px;}
+  .mt-0{margin-top:0;}
+  .mt-2{margin-top:8px;}
+  .mt-4{margin-top:16px;}
+  .mt-6{margin-top:24px;}
+  .muted{color:var(--ink-3);}
+  .kbd{font-family:"JetBrains Mono", monospace; font-size:11.5px; background:var(--bg-2); padding:2px 6px; border-radius:4px; border:1px solid var(--line); color:var(--ink-2);}
+
+</style>
+</head>
+<body>
+
+<!-- =========================== HERO =========================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow"><span class="dot"></span> PROPOSTA VISUAL/UX · v0.1 · BYST.END</div>
+        <h1 class="title">
+          Aprender sobre o que protege.<br>
+          Em <em>silêncio competente</em>, sem espetáculo.
+        </h1>
+        <p class="lede">
+          Uma plataforma educativa de prevenção de assédio profissional &mdash; informativa, calma, acolhedora.
+          Esta é a proposta de design antes da implementação: conceito, sistema, mapa de telas, jornada, componentes e o que cortar se o tempo apertar.
+        </p>
+      </div>
+      <dl class="meta">
+        <div>
+          <dt>Projeto</dt><dd>Byst.end &middot; front_Hackthon</dd>
+          <dt>Etapa</dt><dd>Proposta visual/UX (pré-implementação)</dd>
+          <dt>Stack alvo</dt><dd>React + Vite + TS · Tailwind</dd>
+        </div>
+        <div>
+          <dt>Postura editorial</dt><dd>Educativa &middot; não-acusatória &middot; sem promessa de denúncia</dd>
+          <dt>Para a banca</dt><dd>Demo navegável com mocks locais</dd>
+          <dt>Bloqueia produção</dt><dd>Não &mdash; só fica pronto após aprovação</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</header>
+
+<!-- =========================== DOC =========================== -->
+<div class="wrap doc">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="label">Conteúdo</div>
+    <ol>
+      <li><a href="#c1">Conceito visual</a></li>
+      <li><a href="#c2">Design system</a></li>
+      <li><a href="#c3">Mapa de telas</a></li>
+      <li><a href="#c4">Jornada do usuário</a></li>
+      <li><a href="#c5">Componentes React</a></li>
+      <li><a href="#c6">Conteúdo sensível</a></li>
+      <li><a href="#c7">Acessibilidade</a></li>
+      <li><a href="#c8">MVP visual</a></li>
+      <li><a href="#c9">Riscos de design</a></li>
+      <li><a href="#c10">Recomendação de cortes</a></li>
+      <li><a href="#c11">Decisões e justificativas</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+  <!-- ===== 1. CONCEITO ===== -->
+  <section class="s" id="c1">
+    <div class="s-num">01 / CONCEITO VISUAL</div>
+    <h2 class="h">Byst.end &mdash; <span class="serif" style="font-style:italic">Aprender em segurança.</span></h2>
+    <p class="sub">
+      O produto não é um portal, não é uma ouvidoria, não é um gameplay. É uma <b>biblioteca viva</b> onde o usuário aprende, treina o olhar e
+      tira dúvidas com apoio responsável. A interface deve transmitir competência sem alarde.
+    </p>
+
+    <h3 class="sh">Princípios visuais</h3>
+    <div class="pillars">
+      <div class="pillar"><div class="k">P 01</div><div class="v">Calma antes da informação</div><div class="d">Respiro, hierarquia clara, sem urgência fabricada. O usuário lê em ritmo seguro.</div></div>
+      <div class="pillar"><div class="k">P 02</div><div class="v">Educativo, não acusatório</div><div class="d">Falamos em "sinais de atenção" e "conduta mais segura". Nunca em "isso é assédio" ou "isso é crime".</div></div>
+      <div class="pillar"><div class="k">P 03</div><div class="v">Humano, não institucional</div><div class="d">Tom em primeira pessoa, frases curtas, vocabulário acessível. Sem juridiquês.</div></div>
+      <div class="pillar"><div class="k">P 04</div><div class="v">Transparente em todo lugar</div><div class="d">Fonte, data, limite e canal oficial visíveis no momento em que o usuário precisa decidir algo.</div></div>
+    </div>
+
+    <h3 class="sh">Sensação desejada · Tom de interface</h3>
+    <div class="grid g-2">
+      <div class="card">
+        <h4>Sensação</h4>
+        <p>Como entrar numa <b>biblioteca pública bem iluminada</b>: silenciosa, respeitosa, organizada. Confiança serena, não autoridade severa.</p>
+      </div>
+      <div class="card">
+        <h4>Voz</h4>
+        <p>Direta, factual, acolhedora. "Vamos com calma.", "Aqui está o que se sabe.", "Para casos reais, fale com&hellip;". <span class="muted">Nunca:</span> "denuncie agora", "isso é crime", "você é vítima de&hellip;".</p>
+      </div>
+    </div>
+
+    <div class="avoid">
+      <div class="do">
+        <div class="head">→ Fazer</div>
+        <ul>
+          <li>Espaço em branco generoso, texto em coluna estreita (60-72 caracteres).</li>
+          <li>Acento sage para confirmação; âmbar para avisos educativos.</li>
+          <li>Fontes humanistas (serifa em títulos editoriais, sans em UI).</li>
+          <li>Microcopy em primeira pessoa: <i>"Posso te mostrar materiais sobre isso."</i></li>
+        </ul>
+      </div>
+      <div class="dont">
+        <div class="head">✕ Evitar</div>
+        <ul>
+          <li>Vermelho saturado, ícones de alarme, sirenes, asteriscos.</li>
+          <li>Gradientes "tech" agressivos, glassmorphism, neon.</li>
+          <li>Mascotes, emojis decorativos, confete de quiz, ranking competitivo.</li>
+          <li>Linguagem jurídica conclusiva ("crime", "denúncia", "réu").</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 2. DESIGN SYSTEM ===== -->
+  <section class="s" id="c2">
+    <div class="s-num">02 / DESIGN SYSTEM INICIAL</div>
+    <h2 class="h">Tokens, componentes e estados</h2>
+    <p class="sub">Justificativa de escolha de estilização: <b>Tailwind</b>. Motivo: velocidade de execução em hackathon, tokens
+      previsíveis e fácil reuso entre componentes; cobrimos o sistema em <span class="mono">tailwind.config.ts</span> com nossas variáveis de cor/tipo.</p>
+
+    <!-- Palette -->
+    <h3 class="sh">Paleta</h3>
+    <div class="palette">
+      <div class="swatch">
+        <div class="chip" style="background:#FAF7F2"></div>
+        <div class="meta">
+          <div class="name">Paper</div>
+          <div class="code">#FAF7F2</div>
+          <div class="role">Fundo neutro quente</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:#1B1A17"></div>
+        <div class="meta">
+          <div class="name">Ink</div>
+          <div class="code">#1B1A17</div>
+          <div class="role">Texto / botão primário</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:oklch(0.55 0.060 160)"></div>
+        <div class="meta">
+          <div class="name">Sage 500</div>
+          <div class="code">oklch(.55 .06 160)</div>
+          <div class="role">Confiança · ações educativas</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:oklch(0.70 0.130 75)"></div>
+        <div class="meta">
+          <div class="name">Amber 500</div>
+          <div class="code">oklch(.70 .13 75)</div>
+          <div class="role">Aviso educativo (não erro)</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:oklch(0.62 0.130 28)"></div>
+        <div class="meta">
+          <div class="name">Coral 500</div>
+          <div class="code">oklch(.62 .13 28)</div>
+          <div class="role">Canais oficiais · urgência humana</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:oklch(0.55 0.055 250)"></div>
+        <div class="meta">
+          <div class="name">Slate 500</div>
+          <div class="code">oklch(.55 .055 250)</div>
+          <div class="role">Fonte / referência legal informativa</div>
+        </div>
+      </div>
+    </div>
+    <p class="sub mt-4">
+      Todos os acentos compartilham <span class="mono">L≈0.55–0.70</span> e cromas baixos/medianos (<span class="mono">C≤0.13</span>) para coexistirem sem
+      hierarquia visual ruidosa. Contraste mínimo verificado para texto: <span class="mono">AA &ge; 4.5:1</span>.
+    </p>
+
+    <!-- Type -->
+    <h3 class="sh">Tipografia</h3>
+    <div class="stack">
+      <div class="type-spec">
+        <div class="label">Display / Editorial<b>Source Serif 4 · 500</b></div>
+        <div>
+          <p class="type-sample ts-display">Aprender em segurança.</p>
+          <p class="muted mt-2">Reservado para hero, headers de seção editorial e títulos de conteúdo longo. Itálico para acentos calmos.</p>
+        </div>
+      </div>
+      <div class="type-spec">
+        <div class="label">H1 título de tela<b>Source Serif 4 · 500 · 36/40</b></div>
+        <div>
+          <p class="type-sample ts-h1">O que é assédio moral no trabalho?</p>
+        </div>
+      </div>
+      <div class="type-spec">
+        <div class="label">H2 / Card title<b>Geist · 600 · 22/28</b></div>
+        <div>
+          <p class="type-sample ts-h2">Reconhecer sinais de atenção em reuniões</p>
+        </div>
+      </div>
+      <div class="type-spec">
+        <div class="label">Body / UI<b>Geist · 400 · 16/26</b></div>
+        <div>
+          <p class="type-sample ts-body">A plataforma é educativa e não substitui canais oficiais. Para situações reais, procure RH, ouvidoria, ou os canais públicos listados ao final desta página.</p>
+        </div>
+      </div>
+      <div class="type-spec">
+        <div class="label">Mono / Metadados<b>JetBrains Mono · 400 · 12</b></div>
+        <div>
+          <p class="type-sample ts-cap">FONTE · LEI Nº 14.457/2022 · ATUALIZADO 2025-03 · USO PÚBLICO</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacing -->
+    <h3 class="sh">Espaçamento · Bordas · Sombras</h3>
+    <div class="grid g-2">
+      <div class="demo">
+        <h4>Escala (4 pt)</h4>
+        <p class="muted mt-0" style="font-size:13px;">Tokens: <span class="mono">space-{1..8}</span> = 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64</p>
+        <div class="scale mt-4">
+          <div class="step"><b>4</b><div class="bar" style="height:6px;"></div></div>
+          <div class="step"><b>8</b><div class="bar" style="height:10px;"></div></div>
+          <div class="step"><b>12</b><div class="bar" style="height:14px;"></div></div>
+          <div class="step"><b>16</b><div class="bar" style="height:18px;"></div></div>
+          <div class="step"><b>24</b><div class="bar" style="height:26px;"></div></div>
+          <div class="step"><b>32</b><div class="bar" style="height:34px;"></div></div>
+          <div class="step"><b>48</b><div class="bar" style="height:50px;"></div></div>
+          <div class="step"><b>64</b><div class="bar" style="height:66px;"></div></div>
+        </div>
+      </div>
+      <div class="demo">
+        <h4>Bordas e raios</h4>
+        <p class="muted mt-0" style="font-size:13px;">
+          Raios suaves &mdash; sem cantos arredondados estilo "kids".
+        </p>
+        <div class="row mt-4">
+          <div class="card" style="width:90px; height:60px; border-radius:6px;">  <span class="mono">6</span></div>
+          <div class="card" style="width:90px; height:60px; border-radius:10px;"> <span class="mono">10</span></div>
+          <div class="card" style="width:90px; height:60px; border-radius:16px;"> <span class="mono">16</span></div>
+          <div class="card" style="width:90px; height:60px; border-radius:22px;"> <span class="mono">22</span></div>
+        </div>
+        <p class="muted mt-4" style="font-size:13px;">Sombras: <span class="mono">shadow-sm</span> em cards passivos · sombra média só em modal/diálogo.</p>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <h3 class="sh">Botões</h3>
+    <div class="demo">
+      <div class="btn-row">
+        <button class="btn btn-primary">Continuar aprendendo</button>
+        <button class="btn btn-secondary">Ver fontes</button>
+        <button class="btn btn-ghost">Pular esta seção</button>
+        <button class="btn btn-danger">Ver canais oficiais</button>
+      </div>
+      <p class="muted mt-4" style="font-size:13px;">
+        Altura mínima de 44px (touch). Foco visível: anel <span class="mono">2px sage-500</span> com offset de 2px. Estados <span class="mono">hover · focus-visible · disabled</span> definidos em todos.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <h3 class="sh">Cards de conteúdo</h3>
+    <div class="grid g-3">
+      <article class="card">
+        <div class="row" style="gap:6px; margin-bottom:10px;">
+          <span class="badge public">PUBLIC</span>
+          <span class="badge">5 min</span>
+        </div>
+        <h4 class="serif" style="font-weight:500; font-size:18px; line-height:1.25;">Quando uma "brincadeira" deixa de ser brincadeira</h4>
+        <p style="margin-top:8px;">Micro-conteúdo educativo sobre sinais de atenção em interações repetidas no trabalho.</p>
+        <div class="mono mt-4" style="color:var(--ink-3); font-size:11px;">FONTE · OIT · 2019</div>
+      </article>
+      <article class="card">
+        <div class="row" style="gap:6px; margin-bottom:10px;">
+          <span class="badge educational">EDUCATIONAL</span>
+          <span class="badge">Quiz · 6 q</span>
+        </div>
+        <h4 class="serif" style="font-weight:500; font-size:18px; line-height:1.25;">Reconhecer sinais em reuniões 1:1</h4>
+        <p style="margin-top:8px;">Atividade curta com cenários de baixa pressão. Sem pontuação competitiva.</p>
+        <div class="mono mt-4" style="color:var(--ink-3); font-size:11px;">TRILHA · OLHAR ATENTO</div>
+      </article>
+      <article class="card" style="background:var(--bg-2);">
+        <div class="row" style="gap:6px; margin-bottom:10px;">
+          <span class="badge restricted">RESTRICTED</span>
+        </div>
+        <h4 class="serif" style="font-weight:500; font-size:18px; line-height:1.25;">Conteúdo de uso interno</h4>
+        <p style="margin-top:8px;">Visível só se autorizado pela política de uso. No frontend, fica como placeholder informativo.</p>
+        <div class="mono mt-4" style="color:var(--ink-3); font-size:11px;">USAGE_POLICY · restricted</div>
+      </article>
+    </div>
+
+    <!-- Badges usage_policy -->
+    <h3 class="sh">Badges de <span class="mono">usage_policy</span></h3>
+    <div class="demo">
+      <div class="row">
+        <span class="badge public">PUBLIC</span>
+        <span class="badge educational">EDUCATIONAL</span>
+        <span class="badge internal">INTERNAL</span>
+        <span class="badge restricted">RESTRICTED</span>
+      </div>
+      <p class="muted mt-4" style="font-size:13px;">
+        Os badges seguem cromas do sistema. <b>Restricted</b> nunca aparece em verde nem desbloqueia conteúdo no frontend: é apenas um marcador informativo.
+      </p>
+    </div>
+
+    <!-- Alerts -->
+    <h3 class="sh">Estados de alerta · Avisos educativos</h3>
+    <div class="stack">
+      <div class="alert educativo">
+        <div class="stripe"></div>
+        <div>
+          <b>Esta é uma plataforma educativa.</b>
+          O conteúdo aqui não substitui RH, jurídico, compliance ou canal oficial. Em situação real, consulte os canais ao final da página.
+        </div>
+      </div>
+      <div class="alert canais">
+        <div class="stripe"></div>
+        <div>
+          <b>Em risco imediato? Procure ajuda agora.</b>
+          Disque 180 (violência contra a mulher) · 100 (direitos humanos) · ou seu canal interno de ouvidoria. <a href="#" style="color:var(--coral-700);">Ver canais oficiais</a>.
+        </div>
+      </div>
+      <div class="alert fonte">
+        <div class="stripe"></div>
+        <div>
+          <b>Referência legal informativa.</b>
+          Lei nº 14.457/2022 · CIPA + assédio. Reproduzida para fins didáticos &mdash; não constitui parecer jurídico.
+        </div>
+      </div>
+      <div class="alert limite">
+        <div class="stripe"></div>
+        <div>
+          <b>Limite do assistente.</b>
+          Posso te ajudar a achar materiais e explicar conceitos. Não consigo afirmar se um caso específico é ou não assédio.
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sh">Componente de aviso editorial</h3>
+    <div class="sens">
+      <div class="lbl">conteúdo sensível</div>
+      <p style="margin:0; color:var(--ink-2); font-size:14.5px;">
+        Antes de prosseguir: este material descreve dinâmicas de assédio profissional. Você pode ler em silêncio, salvar para depois, ou ir direto aos canais de apoio.
+        <a href="#" style="color:var(--sage-700);">Ver canais</a> &middot; <a href="#" style="color:var(--ink-2);">Continuar</a>.
+      </p>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 3. MAPA DE TELAS ===== -->
+  <section class="s" id="c3">
+    <div class="s-num">03 / ARQUITETURA DE TELAS</div>
+    <h2 class="h">10 telas · wireframes leves</h2>
+    <p class="sub">
+      Telas estruturadas em torno de três "portas" da Home: <b>Aprender</b>, <b>Simular</b>, <b>Conversar</b>. Tudo o resto orbita essas três decisões.
+      Banner educativo persiste no topo de todas as telas.
+    </p>
+
+    <div class="screens">
+
+      <!-- Home -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div style="height:14px"></div>
+          <div class="wf-h">Aprender em segurança.</div>
+          <div class="wf-line w70"></div>
+          <div style="height:6px"></div>
+          <div class="wf-row grow" style="height:90px">
+            <div class="wf-door dark">
+              <div class="wf-tiny">PORTA 01</div>
+              <div class="wf-h" style="color:#fff;">Aprender</div>
+              <div class="wf-line"></div>
+            </div>
+            <div class="wf-door">
+              <div class="wf-tiny">PORTA 02</div>
+              <div class="wf-h">Simular</div>
+              <div class="wf-line"></div>
+            </div>
+            <div class="wf-door">
+              <div class="wf-tiny">PORTA 03</div>
+              <div class="wf-h">Conversar</div>
+              <div class="wf-line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">01 · HOME</div>
+          <h4>Três portas, um banner educativo</h4>
+          <p>Decisão inicial: o usuário escolhe ler, treinar o olhar ou tirar dúvida. Banner fixo de canais oficiais sempre visível.</p>
+        </div>
+      </div>
+
+      <!-- Biblioteca -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div style="height:10px"></div>
+          <div class="wf-search"><span></span></div>
+          <div class="wf-row" style="gap:6px">
+            <div class="wf-chip on">Tipo</div>
+            <div class="wf-chip">Trilha</div>
+            <div class="wf-chip">Formato</div>
+            <div class="wf-chip">Tempo</div>
+          </div>
+          <div class="wf-row grow">
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w40"></div></div>
+            <div class="wf-card"><div class="wf-pill on"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w30"></div></div>
+          </div>
+          <div class="wf-row grow">
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w40"></div></div>
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+            <div class="wf-card"><div class="wf-pill on"></div><div class="wf-line w70"></div><div class="wf-line w30"></div></div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">02 · BIBLIOTECA</div>
+          <h4>Conteúdos curados por tipo, trilha, tempo</h4>
+          <p>Grid de cards (<span class="mono">CardMicroconteudo</span>) com filtros. Cada card mostra usage_policy + fonte + tempo de leitura.</p>
+        </div>
+      </div>
+
+      <!-- Detalhe -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div style="height:10px"></div>
+          <div class="wf-tiny">TIPO · 5 MIN · FONTE</div>
+          <div class="wf-h">Quando uma "brincadeira" deixa&hellip;</div>
+          <div class="wf-line w70"></div>
+          <div class="wf-line w50"></div>
+          <div class="wf-line w70"></div>
+          <div class="wf-line w40"></div>
+          <div style="height:6px"></div>
+          <div class="wf-block" style="height:36px;"></div>
+          <div class="wf-row">
+            <div class="wf-chip">Fonte citada</div>
+            <div class="wf-chip">Material relacionado</div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">03 · DETALHE</div>
+          <h4>Leitura tranquila, fontes ao pé</h4>
+          <p>Coluna estreita (~68ch), com bloco de <b>Aviso Educativo</b> e <b>FonteCitada</b> sempre presentes. Final sugere quiz ou cenário relacionado.</p>
+        </div>
+      </div>
+
+      <!-- Busca -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-search" style="margin-top:10px"><span></span></div>
+          <div class="wf-row" style="gap:6px">
+            <div class="wf-chip on">Tudo</div>
+            <div class="wf-chip">Conteúdo</div>
+            <div class="wf-chip">Cenário</div>
+            <div class="wf-chip">Quiz</div>
+          </div>
+          <div class="wf-tiny">12 RESULTADOS · ORDENADOS POR RELEVÂNCIA</div>
+          <div class="wf-row grow"><div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div></div>
+          <div class="wf-row grow"><div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div></div>
+          <div class="wf-row grow"><div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div></div>
+        </div>
+        <div class="meta">
+          <div class="tag">04 · BUSCA</div>
+          <h4>Busca por palavra ou situação</h4>
+          <p>Mock local com filtragem simples. Pós-MVP, plugar RAG. Cada resultado vem com a fonte e tipo de conteúdo.</p>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-tiny" style="margin-top:8px">QUESTÃO 03 DE 06</div>
+          <div class="wf-h">"O que melhor descreve&hellip;"</div>
+          <div class="wf-block" style="height:34px"></div>
+          <div class="wf-block" style="height:34px; background:var(--sage-100); border-color:var(--sage-300);"></div>
+          <div class="wf-block" style="height:34px"></div>
+          <div class="wf-block" style="height:34px"></div>
+          <div style="flex:1"></div>
+          <div class="wf-row" style="justify-content:flex-end; gap:6px;">
+            <div class="wf-chip">Voltar</div>
+            <div class="wf-chip on">Confirmar</div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">05 · QUIZ</div>
+          <h4>Questões curtas, feedback educativo</h4>
+          <p>Sem pontuação competitiva. Cada questão termina em <b>FeedbackEducativo</b> com explicação + fonte. Sem "certo/errado" agressivo: usa "resposta mais segura".</p>
+        </div>
+      </div>
+
+      <!-- Miniatividade / Jogo -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-tiny" style="margin-top:8px">MINIATIVIDADE · ARRASTAR</div>
+          <div class="wf-h">Sinal de atenção × conduta segura</div>
+          <div class="wf-row grow">
+            <div class="wf-card" style="background:var(--amber-50); border-color:var(--amber-200);"><div class="wf-line w50"></div><div class="wf-line w70"></div></div>
+            <div class="wf-card" style="background:var(--sage-50); border-color:var(--sage-300);"><div class="wf-line w50"></div><div class="wf-line w70"></div></div>
+          </div>
+          <div class="wf-row" style="gap:6px;">
+            <div class="wf-chip">Item A</div><div class="wf-chip">Item B</div><div class="wf-chip">Item C</div><div class="wf-chip">Item D</div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">06 · MINIATIVIDADE</div>
+          <h4>Classificação / drag · sem timer · sem score</h4>
+          <p>Atividade leve para treinar reconhecimento. Foco em entender, não em vencer. Resultado é uma reflexão, não uma nota.</p>
+        </div>
+      </div>
+
+      <!-- Simulador -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-tiny" style="margin-top:8px">SIMULADOR · CENÁRIO 02</div>
+          <div class="wf-h">"Uma colega evita reuniões 1:1&hellip;"</div>
+          <div class="wf-line w70"></div>
+          <div class="wf-line w50"></div>
+          <div class="wf-row grow">
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div>
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div>
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div></div>
+          </div>
+          <div class="wf-tiny">SINAIS · RISCO ÉTICO · CONDUTA SEGURA</div>
+        </div>
+        <div class="meta">
+          <div class="tag">07 · RADAR DE CONDUTAS</div>
+          <h4>Cenários narrativos, escolha de conduta</h4>
+          <p>Cada cenário (<span class="mono">CenarioCard</span>) descreve uma situação e oferece 3 respostas. O feedback descreve "risco ético/legal" e "conduta mais segura" &mdash; nunca acusa o usuário.</p>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="alert limite" style="padding:8px 10px; font-size:11px; gap:8px;"><div class="stripe" style="width:4px;"></div><div><b>Apoio educativo · não é canal de denúncia.</b></div></div>
+          <div class="wf-bubble-l"><span></span><span style="width:80%"></span></div>
+          <div class="wf-bubble-r"><span></span><span style="width:60%"></span></div>
+          <div class="wf-bubble-l"><span></span><span></span><span style="width:50%"></span></div>
+          <div class="wf-row" style="gap:6px;">
+            <div class="wf-chip">"O que é assédio moral?"</div>
+            <div class="wf-chip">"Como agir em reunião 1:1?"</div>
+          </div>
+          <div style="flex:1"></div>
+          <div class="wf-search"><span></span></div>
+        </div>
+        <div class="meta">
+          <div class="tag">08 · CHAT ORIENTATIVO</div>
+          <h4>Apoio · com fontes · com limite explícito</h4>
+          <p>Aviso fixo no topo. Cada resposta traz <b>FonteCitada</b> e, quando faz sentido, lembra o canal oficial. Sugestões guiam o usuário ao território seguro.</p>
+        </div>
+      </div>
+
+      <!-- Canais -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-h" style="margin-top:8px;">Onde buscar apoio agora</div>
+          <div class="wf-line w50"></div>
+          <div class="wf-row grow">
+            <div class="wf-card" style="border-color:color-mix(in oklab, var(--coral-500) 30%, var(--bg-3));"><div class="wf-pill" style="background:var(--coral-500)"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+          </div>
+          <div class="wf-row grow">
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+            <div class="wf-card"><div class="wf-pill"></div><div class="wf-line w70"></div><div class="wf-line w50"></div></div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="tag">09 · CANAIS DE APOIO</div>
+          <h4>Lista clara, sem promessa de anonimato</h4>
+          <p>Canais oficiais públicos (180, 100, MPT, sindicatos) e orientação para canais internos da empresa do usuário. Sem qualquer formulário de denúncia direto.</p>
+        </div>
+      </div>
+
+      <!-- Progresso -->
+      <div class="screen">
+        <div class="frame">
+          <div class="wf-nav"></div>
+          <div class="wf-banner"></div>
+          <div class="wf-h" style="margin-top:8px;">Seu caminho aqui</div>
+          <div class="wf-tiny">SALVO NESTE NAVEGADOR</div>
+          <div class="wf-row grow">
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div><div class="wf-pill on"></div></div>
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div><div class="wf-pill"></div></div>
+            <div class="wf-card"><div class="wf-line w50"></div><div class="wf-line w70"></div><div class="wf-pill"></div></div>
+          </div>
+          <div class="wf-tiny">3 CONTEÚDOS LIDOS · 1 TRILHA INICIADA</div>
+        </div>
+        <div class="meta">
+          <div class="tag">10 · PROGRESSO LOCAL</div>
+          <h4>Progresso íntimo, sem ranking, sem compartilhar</h4>
+          <p>Persistência em <span class="mono">localStorage</span>. Sem leaderboard. Sem comparação social. Apenas: "o que você já viu", "o que está aberto".</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 4. JORNADA ===== -->
+  <section class="s" id="c4">
+    <div class="s-num">04 / JORNADA DO USUÁRIO</div>
+    <h2 class="h">O fluxo da demo</h2>
+    <p class="sub">Sequência canônica que a banca vai ver na apresentação. Cada passo é alcançável a partir da Home em até 2 cliques.</p>
+    <div class="journey">
+      <div class="journey-steps">
+        <div class="js"><div class="n">Chegada</div><b>Home</b><span>Banner educativo + 3 portas. Texto explica o que a plataforma é e não é.</span></div>
+        <div class="js"><div class="n">Escolha</div><b>Aprender / Simular / Conversar</b><span>O usuário escolhe uma porta. Cada porta tem entrada própria e contexto.</span></div>
+        <div class="js"><div class="n">Conteúdo</div><b>Biblioteca → Detalhe</b><span>Encontra um micro-conteúdo curado. Lê com aviso educativo presente.</span></div>
+        <div class="js"><div class="n">Prática</div><b>Quiz ou miniatividade</b><span>Faz uma atividade curta. Feedback é explicativo, não punitivo.</span></div>
+        <div class="js"><div class="n">Reflexão</div><b>FeedbackEducativo</b><span>Recebe a "leitura mais segura" da situação + fontes citadas.</span></div>
+        <div class="js"><div class="n">Dúvida</div><b>Chat orientativo</b><span>Abre chat para perguntar. Resposta vem com fonte e aviso de limite.</span></div>
+        <div class="js"><div class="n">Saída</div><b>Canais oficiais</b><span>Se necessário, o usuário sai da plataforma rumo ao canal real, com clareza.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 5. COMPONENTES ===== -->
+  <section class="s" id="c5">
+    <div class="s-num">05 / COMPONENTES REACT PRINCIPAIS</div>
+    <h2 class="h">Inventário do front</h2>
+    <p class="sub">Todos previstos para <span class="mono">frontend/src/components/</span>, com props tipadas, dados mockados em <span class="mono">frontend/src/data/</span> e preparados para o contrato futuro da API.</p>
+
+    <div class="comp-list">
+      <div class="row"><div class="name">&lt;Header /&gt;</div><p>Barra fixa com logo, navegação principal e atalho para canais oficiais. Sticky no scroll.</p></div>
+      <div class="row"><div class="name">&lt;BannerCanaisOficiais /&gt;</div><p>Faixa coral persistente acima do header em todas as telas. Sempre clicável. Sem promessa de denúncia.</p></div>
+      <div class="row"><div class="name">&lt;AvisoEducativo /&gt;</div><p>Bloco âmbar reutilizável. Variantes: <span class="mono">page</span>, <span class="mono">inline</span>, <span class="mono">compact</span>.</p></div>
+      <div class="row"><div class="name">&lt;CardTipoViolencia /&gt;</div><p>Card editorial maior com nome do tipo, definição curta, exemplos. Sem rótulo conclusivo.</p></div>
+      <div class="row"><div class="name">&lt;CardMicroconteudo /&gt;</div><p>Card padrão da Biblioteca: título, tempo, fonte, badge usage_policy. Hover sutil.</p></div>
+      <div class="row"><div class="name">&lt;NanoCard /&gt;</div><p>Card mínimo para listas densas (resultados de busca, "veja também"). Apenas título + meta.</p></div>
+      <div class="row"><div class="name">&lt;SearchBar /&gt;</div><p>Input com sugestões mockadas. Suporta busca por palavra e por situação ("e se&hellip;").</p></div>
+      <div class="row"><div class="name">&lt;FilterChips /&gt;</div><p>Chips toggláveis para Tipo/Trilha/Formato/Tempo. Estado controlado, acessível por teclado.</p></div>
+      <div class="row"><div class="name">&lt;QuizQuestionCard /&gt;</div><p>Pergunta + alternativas + barra de progresso. Sem timer. Acessível com setas e Enter.</p></div>
+      <div class="row"><div class="name">&lt;FeedbackEducativo /&gt;</div><p>Explicação pós-resposta. Estrutura: <i>"o que você escolheu"</i>, <i>"leitura mais segura"</i>, <i>"por quê"</i>, <i>fonte</i>.</p></div>
+      <div class="row"><div class="name">&lt;CenarioCard /&gt;</div><p>Cenário narrativo + lista de condutas possíveis. Usado no Simulador.</p></div>
+      <div class="row"><div class="name">&lt;RiskSignalList /&gt;</div><p>Lista enumerada de sinais de atenção. Cada item é factual, não conclusivo.</p></div>
+      <div class="row"><div class="name">&lt;ChatMessage /&gt;</div><p>Bolha de mensagem com slot de fontes. Versão "assistente" inclui aviso compacto de limite.</p></div>
+      <div class="row"><div class="name">&lt;FonteCitada /&gt;</div><p>Bloco slate com autor, ano, link/título. Reutilizado em conteúdo, quiz, chat.</p></div>
+      <div class="row"><div class="name">&lt;SuggestedPrompts /&gt;</div><p>Sugestões clicáveis acima do input do chat. Pré-aprovadas, levam o usuário a território educativo seguro.</p></div>
+      <div class="row"><div class="name">&lt;ProgressCard /&gt;</div><p>Cartão da página de progresso. Linguagem íntima, sem comparação social.</p></div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 6. CONTEÚDO SENSÍVEL ===== -->
+  <section class="s" id="c6">
+    <div class="s-num">06 / REGRAS DE CONTEÚDO SENSÍVEL</div>
+    <h2 class="h">O design reforça o limite</h2>
+    <p class="sub">Cinco regras que viram comportamento visual concreto na interface.</p>
+    <div class="grid g-2">
+      <div class="card">
+        <h4>1 · A plataforma é educativa</h4>
+        <p>Banner persistente + aviso compacto em chat, quiz e simulador. Frase canônica: <i>"Conteúdo educativo. Não substitui canais oficiais."</i></p>
+      </div>
+      <div class="card">
+        <h4>2 · O chat tem limite</h4>
+        <p>Aviso fixo no topo do chat. Cada resposta do assistente pode terminar em <span class="mono">&lt;FonteCitada /&gt;</span> + lembrete do canal oficial quando faz sentido.</p>
+      </div>
+      <div class="card">
+        <h4>3 · Referências legais são informativas</h4>
+        <p>Citações vêm em bloco slate (<span class="badge internal">REFERENCE</span>) com data e alerta: <i>"reproduzido para fins didáticos &mdash; não constitui parecer jurídico"</i>.</p>
+      </div>
+      <div class="card">
+        <h4>4 · Nada é "isso é assédio"/"isso é crime"</h4>
+        <p>Microcopy proibido no design: <span class="muted">denuncie</span>, <span class="muted">crime</span>, <span class="muted">vítima</span>. Permitido: <i>sinal de atenção</i>, <i>conduta mais segura</i>, <i>risco ético/legal</i>.</p>
+      </div>
+      <div class="card" style="grid-column: span 2;">
+        <h4>5 · Simulações não acusam o usuário</h4>
+        <p>O <b>FeedbackEducativo</b> sempre fala da <i>situação</i>, não da <i>pessoa</i>. Sintaxe canônica: <i>"Nesse cenário, a leitura mais segura tende a ser X, porque Y."</i> Nunca: "você está errado". Nunca: "você assediou".</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 7. A11Y ===== -->
+  <section class="s" id="c7">
+    <div class="s-num">07 / ACESSIBILIDADE E RESPONSIVIDADE</div>
+    <h2 class="h">Mobile-first, contraste verificado, teclado-completo</h2>
+    <p class="sub">Compromissos mensuráveis, não promessas vagas.</p>
+    <div class="grid g-2">
+      <div class="card">
+        <h4>Contraste</h4>
+        <p>Texto sobre fundos atinge WCAG AA (4.5:1). Verificado para todos os pares ink/paper, ink/bg-2, sage-700/paper, coral-700/coral-50.</p>
+      </div>
+      <div class="card">
+        <h4>Navegação por teclado</h4>
+        <p>Foco visível em <span class="mono">2px sage-500</span> com offset. Ordem de tabulação revisada por tela. <span class="kbd">Esc</span> fecha modais.</p>
+      </div>
+      <div class="card">
+        <h4>Mobile-first</h4>
+        <p>Breakpoints <span class="mono">sm 640 · md 768 · lg 1024</span>. Touch targets <span class="mono">≥ 44px</span>. Em mobile, "3 portas" da Home empilham verticalmente, mantendo hierarquia.</p>
+      </div>
+      <div class="card">
+        <h4>Linguagem simples</h4>
+        <p>Textos UI até nível médio de leitura. Glossário inline para termos técnicos. Linguagem em primeira pessoa, frases curtas.</p>
+      </div>
+      <div class="card">
+        <h4>Movimento</h4>
+        <p>Animações sutis (≤200ms). Respeita <span class="mono">prefers-reduced-motion</span>: desativa transições não essenciais.</p>
+      </div>
+      <div class="card">
+        <h4>Leitor de tela</h4>
+        <p>Landmarks (<span class="mono">header / main / aside / footer</span>), <span class="mono">aria-live</span> em feedback de quiz, <span class="mono">aria-current</span> em filtros ativos.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 8. MVP ===== -->
+  <section class="s" id="c8">
+    <div class="s-num">08 / MVP VISUAL</div>
+    <h2 class="h">O que vai pronto para a banca</h2>
+    <p class="sub">Três colunas de prioridade. A coluna <b>Essencial</b> é o que garante a demo; a do meio é "se der tempo"; a terceira fica para depois.</p>
+
+    <div class="mvp">
+      <div class="col must">
+        <header><b>Essencial · demo</b><span class="tg">MUST</span></header>
+        <ul>
+          <li>Home com 3 portas (Aprender · Simular · Conversar)</li>
+          <li>Banner educativo persistente em todas as telas</li>
+          <li>Biblioteca com cards mockados + filtros básicos</li>
+          <li>Detalhe de conteúdo com fonte e aviso</li>
+          <li>Quiz simples (3–6 perguntas) com FeedbackEducativo</li>
+          <li>Simulador com 2 cenários mockados</li>
+          <li>Chat visual (sem IA real) com aviso fixo e fontes mockadas</li>
+          <li>Página de canais oficiais</li>
+        </ul>
+      </div>
+      <div class="col nice">
+        <header><b>Diferencial · se der tempo</b><span class="tg">SHOULD</span></header>
+        <ul>
+          <li>Página de Progresso local (<span class="mono">localStorage</span>)</li>
+          <li>Busca por palavra com filtro client-side</li>
+          <li>Badges de trilha (sem ranking)</li>
+          <li>Tela "O que fazer agora?" (decision tree informativo)</li>
+          <li>Modo Testemunha (perspectiva de terceiro)</li>
+          <li>Miniatividade drag-and-drop (1 atividade)</li>
+          <li>Animações de transição entre telas (≤200ms)</li>
+        </ul>
+      </div>
+      <div class="col later">
+        <header><b>Pós-MVP</b><span class="tg">LATER</span></header>
+        <ul>
+          <li>Integração com FastAPI</li>
+          <li>RAG real no Gemini (com guardrails)</li>
+          <li>Busca semântica</li>
+          <li>Trilhas longas com cronograma</li>
+          <li>Dark mode</li>
+          <li>Internacionalização</li>
+          <li>Modo administrador para curadoria de conteúdo</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 9. RISCOS ===== -->
+  <section class="s" id="c9">
+    <div class="s-num">09 / RISCOS DE DESIGN</div>
+    <h2 class="h">Onde o design pode falhar e o que evita isso</h2>
+    <table class="risk">
+      <thead>
+        <tr>
+          <th style="width:32%">Risco</th>
+          <th style="width:12%">Severidade</th>
+          <th>Mitigação no design</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Usuário interpreta a plataforma como canal de denúncia</td>
+          <td><span class="sev alta">ALTA</span></td>
+          <td>Banner coral persistente "não é canal de denúncia". Aviso fixo no chat. Página dedicada de canais oficiais sempre a 1 clique.</td>
+        </tr>
+        <tr>
+          <td>Chat dá resposta conclusiva ("isso é assédio")</td>
+          <td><span class="sev alta">ALTA</span></td>
+          <td>Microcopy proibido no sistema de design. ChatMessage do assistente nunca renderiza sem o slot de fonte e o aviso de limite, no contrato do componente.</td>
+        </tr>
+        <tr>
+          <td>Quiz/simulador soam acusatórios</td>
+          <td><span class="sev media">MÉDIA</span></td>
+          <td>FeedbackEducativo fala da situação, não da pessoa. Sem score competitivo. Sem confete. Cor de "errado" é âmbar (educativo), não vermelho.</td>
+        </tr>
+        <tr>
+          <td>Visual fica "tech aggressive" e perde acolhimento</td>
+          <td><span class="sev media">MÉDIA</span></td>
+          <td>Paleta neutra-quente, serifa em títulos editoriais, sem gradientes ostensivos, sem ícones de alarme.</td>
+        </tr>
+        <tr>
+          <td>Conteúdo sensível inventado pela IA aparece no front</td>
+          <td><span class="sev alta">ALTA</span></td>
+          <td>Frontend só renderiza JSON curado. Nenhum componente possui prop de texto livre vinda da IA sem passar por validação de fonte.</td>
+        </tr>
+        <tr>
+          <td>A11y quebra em mobile (toques pequenos, contraste baixo)</td>
+          <td><span class="sev media">MÉDIA</span></td>
+          <td>Tokens com targets ≥44px e tabela de contraste verificada antes do merge.</td>
+        </tr>
+        <tr>
+          <td>Conteúdos com <span class="mono">usage_policy: restricted</span> vazam para usuário público</td>
+          <td><span class="sev media">MÉDIA</span></td>
+          <td>CardMicroconteudo trata <span class="mono">restricted</span> como placeholder informativo, nunca renderiza o corpo.</td>
+        </tr>
+        <tr>
+          <td>Sobreposição de avisos cria fadiga e o usuário ignora</td>
+          <td><span class="sev baixa">BAIXA</span></td>
+          <td>Hierarquia de avisos definida (educativo &lt; fonte &lt; limite &lt; canais). Nunca 3 avisos juntos numa tela.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 10. CORTES ===== -->
+  <section class="s" id="c10">
+    <div class="s-num">10 / SE O TEMPO APERTAR</div>
+    <h2 class="h">O que eu recomendo cortar primeiro</h2>
+    <p class="sub">Ordem de corte sugerida, do mais descartável ao mais "doloroso". Mantemos sempre o trio Home/Biblioteca/Chat e o banner educativo.</p>
+    <ol style="padding-left:20px; line-height:1.85; color:var(--ink-2); max-width:80ch;">
+      <li><b>Animações de transição.</b> Substituir por fade simples. Não impacta a demo.</li>
+      <li><b>Miniatividade drag-and-drop.</b> Substituível por uma segunda variação de quiz.</li>
+      <li><b>Modo Testemunha.</b> É um diferencial conceitual; pode virar item de roadmap na apresentação.</li>
+      <li><b>Página de Progresso.</b> Localizada no menu, mas o conteúdo pode mostrar só "últimos vistos" se localStorage não der tempo.</li>
+      <li><b>Busca dedicada.</b> Manter apenas filtros na Biblioteca; tela de Busca vira pós-MVP.</li>
+      <li><b>Decision tree "O que fazer agora?".</b> Substituível por link direto para Canais Oficiais.</li>
+      <li><b>Segundo cenário do Simulador.</b> Demo funciona com 1 cenário bem construído.</li>
+    </ol>
+    <p class="sub mt-4"><b>Não cortar (não-negociáveis):</b> banner educativo persistente, aviso fixo no chat, FonteCitada em conteúdo educativo, página de canais oficiais.</p>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- ===== 11. DECISÕES ===== -->
+  <section class="s" id="c11">
+    <div class="s-num">11 / DECISÕES E JUSTIFICATIVAS</div>
+    <h2 class="h">Por que essas escolhas</h2>
+    <div class="grid g-2">
+      <div class="card">
+        <h4>Por que Tailwind, não CSS Modules</h4>
+        <p>Em hackathon, Tailwind dá velocidade e tokens previsíveis. Os design tokens viram extensão do <span class="mono">theme</span> em <span class="mono">tailwind.config.ts</span>. CSS Modules ganharia em isolamento mas perderia em ritmo &mdash; e isolamento aqui é mitigado pelos componentes pequenos.</p>
+      </div>
+      <div class="card">
+        <h4>Por que serifa em títulos</h4>
+        <p>Source Serif 4 carrega calma editorial e diferencia o produto de SaaS genérico. Sans (Geist) cuida da UI; serifa marca o que é leitura.</p>
+      </div>
+      <div class="card">
+        <h4>Por que sage, e não verde-corporativo</h4>
+        <p>Sage tem cromaticidade baixa e lembra ambiente cuidado &mdash; biblioteca, não dashboard. Verde saturado evocaria "tudo certo / sucesso", o que aqui não se aplica.</p>
+      </div>
+      <div class="card">
+        <h4>Por que âmbar em vez de vermelho para avisos</h4>
+        <p>Vermelho é punitivo e dispara reação defensiva. Âmbar é educativo: "preste atenção", não "você errou". O coral fica reservado para canais oficiais &mdash; um único disparo emocional, no lugar certo.</p>
+      </div>
+      <div class="card">
+        <h4>Por que progresso só local</h4>
+        <p>Conteúdo sensível em servidor cria responsabilidade que o MVP não consegue cumprir. <span class="mono">localStorage</span> evita promessas de anonimato/confidencialidade que ainda não temos como garantir.</p>
+      </div>
+      <div class="card">
+        <h4>Por que sem ranking</h4>
+        <p>Gamificação competitiva no contexto de assédio gera leitura errada. Progresso aqui é íntimo, não social.</p>
+      </div>
+    </div>
+
+    <h3 class="sh">Próximos passos sugeridos</h3>
+    <ol style="padding-left:20px; line-height:1.8; color:var(--ink-2); max-width:80ch;">
+      <li>Você aprova ou pede ajustes neste documento.</li>
+      <li>Eu monto a estrutura <span class="mono">frontend/src/{components,pages,data,hooks,styles}</span> com mocks locais derivados de <span class="mono">backend/seed/conteudo_normalizado.curated.preview.json</span>.</li>
+      <li>Implemento Home + Banner + Biblioteca + Detalhe + Quiz + Simulador (1 cenário) + Chat (mock) + Canais. Rotas com React Router.</li>
+      <li>Verifico critérios de aceite e entrego com lista de arquivos criados, como rodar (<span class="mono">npm run dev</span>), evidências visuais e pendências.</li>
+    </ol>
+  </section>
+
+  </main>
+</div>
+
+<!-- =========================== FOOTER =========================== -->
+<footer class="foot">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; gap:24px; flex-wrap:wrap;">
+    <div><b>Byst.end</b> &middot; Proposta visual/UX v0.1 &middot; pré-implementação</div>
+    <div class="mono">SOURCE SERIF 4 · GEIST · JETBRAINS MONO · OKLCH</div>
+  </div>
+</footer>
+
+</body>
+</html>
